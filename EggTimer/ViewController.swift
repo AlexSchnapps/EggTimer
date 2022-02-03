@@ -17,7 +17,19 @@ class ViewController: UIViewController {
         "Hard": 12
       ]
       
+    var secondsRemaining = 30
+    
       @IBAction func hardnessSelection(_ sender: UIButton) {
+          
+          Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
+                  if self.secondsRemaining > 0 {
+                      print ("\(self.secondsRemaining) seconds")
+                      self.secondsRemaining -= 1
+                  } else {
+                      Timer.invalidate()
+                  }
+              }
+          
           guard let hardness = sender.titleLabel?.text else { return }
           print(hardness)
           
