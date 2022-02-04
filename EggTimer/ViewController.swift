@@ -8,7 +8,7 @@ class ViewController: UIViewController {
     
     //MARK: - IBOutlets
     
-    @IBOutlet weak var barProgress: UIProgressView!
+    @IBOutlet weak var progressBar: UIProgressView!
     
     @IBOutlet weak var titleLabel: UILabel!
     
@@ -42,6 +42,11 @@ class ViewController: UIViewController {
         
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
             if self.secondsPassed < self.totalTime {
+                
+                let percentageProgress = self.secondsPassed / self.totalTime
+                
+                self.progressBar.progress = Float(percentageProgress)
+                
                 self.secondsPassed += 1
             } else {
                 Timer.invalidate()
