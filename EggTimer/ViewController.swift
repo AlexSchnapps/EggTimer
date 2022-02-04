@@ -40,7 +40,7 @@ final class ViewController: UIViewController {
         guard let hardness = sender.titleLabel?.text else { return }
         
         totalTime = eggTimes[hardness]!
-        
+        //MARK: - Timer
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (Timer) in
             if self.secondsPassed < self.totalTime {
                 self.secondsPassed += 1
@@ -48,6 +48,7 @@ final class ViewController: UIViewController {
                 Float(self.secondsPassed) /
                 Float(self.totalTime)
             } else {
+                //MARK: - Player
                 func playSound(_ resource: String) {
                     let url = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3")
                     self.player = try! AVAudioPlayer(contentsOf: url!)
@@ -56,11 +57,7 @@ final class ViewController: UIViewController {
                 playSound("alarm_sound")
                 Timer.invalidate()
                 self.titleLabel.text = "DONE!"
-                
             }
         }
-        
     }
-    
-    
 }
