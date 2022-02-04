@@ -6,46 +6,55 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    //MARK: - IBOutlets
+    
+    @IBOutlet weak var progressBar: UIProgressView!
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
     
-      let eggTimes = [
-        "Soft": 300,
-        "Medium": 420,
-        "Hard": 720
-      ]
-      
-    var secondsRemaining = 60
+    let eggTimes = [
+        "Soft": 3,
+        "Medium": 5,
+        "Hard": 7
+    ]
     
-      @IBAction func hardnessSelection(_ sender: UIButton) {
-          
-          Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
-                  if self.secondsRemaining > 0 {
-                      print ("\(self.secondsRemaining) seconds")
-                      self.secondsRemaining -= 1
-                  } else {
-                      Timer.invalidate()
-                  }
-              }
-          
-          guard let hardness = sender.titleLabel?.text else { return }
-          print(hardness)
-          
-          switch hardness {
-              
-          case "Soft":
-              secondsRemaining = (eggTimes["Soft"]!)
-          case "Medium":
-              secondsRemaining = (eggTimes["Medium"]!)
-          case "Hard":
-              secondsRemaining = (eggTimes["Hard"]!)
-          default:
-              print("nil")
-          }
-          
-      }
-
-
+    var timer = Timer()
+    
+    var totalTime = 0
+    var secondsPassed = 0
+    
+    //MARK: - IBActions
+    
+    @IBAction func hardnessSelection(_ sender: UIButton) {
+        
+        timer.invalidate()
+        
+        titleLabel.text = "How do you like your eggs?"
+        
+        guard let hardness = sender.titleLabel?.text else { return }
+        
+        totalTime = eggTimes[hardness]!
+        
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
+            if self.secondsPassed < self.totalTime {
+                
+                let percentageProgress = self.secondsPassed / self.totalTime
+                
+                self.progressBar.progress = Float(percentageProgress)
+                
+                self.secondsPassed += 1
+            } else {
+                Timer.invalidate()
+                self.titleLabel.text = "DONE!"
+            }
+        }
+        
+    }
+    
+    
 }
