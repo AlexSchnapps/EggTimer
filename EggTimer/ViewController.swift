@@ -8,6 +8,8 @@ class ViewController: UIViewController {
     
     //MARK: - IBOutlets
     
+    @IBOutlet weak var barProgress: UIProgressView!
+    
     @IBOutlet weak var titleLabel: UILabel!
     
     override func viewDidLoad() {
@@ -23,27 +25,30 @@ class ViewController: UIViewController {
     
     var timer = Timer()
     
-    var secondsRemaining = 60
+    var totalTime = 0
+    var secondsPassed = 0
     
     //MARK: - IBActions
     
     @IBAction func hardnessSelection(_ sender: UIButton) {
         
         timer.invalidate()
+        
         titleLabel.text = "How do you like your eggs?"
+        
         guard let hardness = sender.titleLabel?.text else { return }
         
-        secondsRemaining = eggTimes[hardness]!
+        totalTime = eggTimes[hardness]!
         
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { (Timer) in
-            if self.secondsRemaining > 0 {
-                print ("\(self.secondsRemaining) seconds")
-                self.secondsRemaining -= 1
+            if self.secondsPassed < self.totalTime {
+                self.secondsPassed += 1
             } else {
                 Timer.invalidate()
                 self.titleLabel.text = "DONE!"
             }
         }
+        
     }
     
     
